@@ -1,0 +1,230 @@
+{
+  "C:\\Users\\braya\\Downloads\\pruebaTecnica\\projectJL\\services\\processing-app": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.19",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "default-aws-credential-resolver": "<REDACTED>",
+      "sls": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "processing-app",
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs18.x",
+              "region": "us-east-2",
+              "stage": "dev",
+              "iam": {
+                "role": {
+                  "statements": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "s3:GetObject",
+                        "s3:ListBucket"
+                      ],
+                      "Resource": [
+                        "arn:aws:s3:::data-models-jl",
+                        "arn:aws:s3:::data-models-jl/*"
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "dynamodb:PutItem",
+                        "dynamodb:GetItem",
+                        "dynamodb:UpdateItem",
+                        "dynamodb:Query"
+                      ],
+                      "Resource": "arn:aws:dynamodb:us-east-2:124355664493:table/processedData"
+                    }
+                  ]
+                }
+              },
+              "versionFunctions": true,
+              "environment": {
+                "IS_LOCAL": "true"
+              }
+            },
+            "plugins": [
+              "serverless-offline"
+            ],
+            "functions": {
+              "process": {
+                "handler": "src/app/functions/processing.handler",
+                "events": [
+                  {
+                    "s3": {
+                      "bucket": "data-models-jl",
+                      "event": "s3:ObjectCreated:*",
+                      "existing": true,
+                      "rules": [
+                        {
+                          "prefix": ""
+                        },
+                        {
+                          "suffix": ".json"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "name": "processing-app-dev-process",
+                "environment": {
+                  "NODE_OPTIONS": "--enable-source-maps"
+                }
+              }
+            }
+          },
+          "configFileDirPath": "C:\\Users\\braya\\Downloads\\pruebaTecnica\\projectJL\\services\\processing-app",
+          "config": {
+            "type": "sls"
+          },
+          "options": {
+            "function": "process",
+            "path": "s3-event.json"
+          },
+          "stage": "dev",
+          "dashboard": null,
+          "logger": {
+            "namespace": "s:core:resolver:sls",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      }
+    },
+    "composeServiceName": null,
+    "servicePath": "C:\\Users\\braya\\Downloads\\pruebaTecnica\\projectJL\\services\\processing-app",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "processing-app",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "region": "us-east-2",
+        "stage": "dev",
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "s3:GetObject",
+                  "s3:ListBucket"
+                ],
+                "Resource": [
+                  "arn:aws:s3:::data-models-jl",
+                  "arn:aws:s3:::data-models-jl/*"
+                ]
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:Query"
+                ],
+                "Resource": "arn:aws:dynamodb:us-east-2:124355664493:table/processedData"
+              }
+            ]
+          }
+        },
+        "versionFunctions": true,
+        "environment": {
+          "IS_LOCAL": "true"
+        }
+      },
+      "plugins": [
+        "serverless-offline"
+      ],
+      "functions": {
+        "process": {
+          "handler": "src/app/functions/processing.handler",
+          "events": [
+            {
+              "s3": {
+                "bucket": "data-models-jl",
+                "event": "s3:ObjectCreated:*",
+                "existing": true,
+                "rules": [
+                  {
+                    "prefix": ""
+                  },
+                  {
+                    "suffix": ".json"
+                  }
+                ]
+              }
+            }
+          ],
+          "name": "processing-app-dev-process",
+          "environment": {
+            "NODE_OPTIONS": "--enable-source-maps"
+          }
+        }
+      }
+    },
+    "serviceRawFile": "service: processing-app\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs18.x\r\n  region: us-east-2\r\n  stage: dev\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"s3:GetObject\"\r\n            - \"s3:ListBucket\"\r\n          Resource:\r\n            - \"arn:aws:s3:::data-models-jl\"\r\n            - \"arn:aws:s3:::data-models-jl/*\"\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"dynamodb:PutItem\"\r\n            - \"dynamodb:GetItem\"\r\n            - \"dynamodb:UpdateItem\"\r\n            - \"dynamodb:Query\"\r\n          Resource:\r\n            - \"arn:aws:dynamodb:us-east-2:124355664493:table/processedData\"\r\nplugins:\r\n\r\n  - serverless-offline\r\n\r\nfunctions:\r\n  process:\r\n    handler: src/app/functions/processing.handler\r\n    events:\r\n      - s3:\r\n          bucket: data-models-jl\r\n          event: s3:ObjectCreated:*\r\n          existing: true \r\n          rules:\r\n            - prefix: \"\" \r\n            - suffix: \".json\" \r\n",
+    "command": [
+      "invoke",
+      "local"
+    ],
+    "options": {
+      "function": "process",
+      "path": "s3-event.json"
+    },
+    "error": null,
+    "params": {},
+    "machineId": "ea3262a622d5e5d0a09e34ffceb6c86c",
+    "stage": "dev",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "f7ea559a-6dd7-463c-91c2-9f8fa89d6772",
+    "orgName": "32145676",
+    "userId": "gb4NhXpsyjSTgw48w0",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "32145676",
+    "subscription": null,
+    "userEmail": "3106571661brayan@gmail.com",
+    "serviceProviderAwsRegion": "us-east-2",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "124355664493",
+    "projectType": "traditional",
+    "versionSf": "4.4.19",
+    "serviceProviderAwsCfStackName": "processing-app-dev",
+    "integrations": {},
+    "serviceUniqueId": "arn:aws:cloudformation:us-east-2:124355664493:stack/processing-app-dev/c5d641c0-d450-11ef-93d7-065a24ed4727",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-2:124355664493:stack/processing-app-dev/c5d641c0-d450-11ef-93d7-065a24ed4727",
+    "serviceProviderAwsCfStackCreated": "2025-01-16T21:28:05.422Z",
+    "serviceProviderAwsCfStackUpdated": "2025-01-16T23:59:42.413Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "ProcessLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-2:124355664493:function:processing-app-dev-process:9",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-processing-app-dev-ProcessLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-2-4bfefa1d-aa10",
+        "ExportName": "sls-processing-app-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

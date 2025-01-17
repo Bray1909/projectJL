@@ -1,0 +1,15 @@
+{
+    "Records": [
+      {
+        "s3": {
+          "bucket": {
+            "name": "data-models-jl"
+          },
+          "object": {
+            "key": "data-1737072052461.json"
+          }
+        }
+      }
+    ]
+  }
+  

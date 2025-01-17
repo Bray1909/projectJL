@@ -1,0 +1,27 @@
+service: data-retrieval
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:Query"
+            - "dynamodb:Scan"
+          Resource:
+            - "arn:aws:dynamodb:us-east-2:124355664493:table/processedData"
+
+plugins:
+  - serverless-offline
+
+functions:
+  getProcessedData:
+    handler: src/app/functions/getProcessedData.handler
+    events:
+      - http:
+          path: /processed-data
+          method: get

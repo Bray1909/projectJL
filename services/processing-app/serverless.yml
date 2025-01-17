@@ -1,0 +1,40 @@
+service: processing-app
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:ListBucket"
+          Resource:
+            - "arn:aws:s3:::data-models-jl"
+            - "arn:aws:s3:::data-models-jl/*"
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:GetItem"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:Query"
+          Resource:
+            - "arn:aws:dynamodb:us-east-2:124355664493:table/processedData"
+plugins:
+
+  - serverless-offline
+
+functions:
+  process:
+    handler: src/app/functions/processing.handler
+    events:
+      - s3:
+          bucket: data-models-jl
+          event: s3:ObjectCreated:*
+          existing: true 
+          rules:
+            - prefix: "" 
+            - suffix: ".json" 

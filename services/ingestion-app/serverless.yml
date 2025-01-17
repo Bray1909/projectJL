@@ -1,0 +1,28 @@
+service: data-ingestion-service
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2
+  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:GetObject"
+        - "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::data-models-jl/*"
+
+plugins:
+  - serverless-offline
+
+functions:
+  ingestion:
+    handler: src/app/functions/ingestion.handler
+    events:
+      - http:
+          path: /ingestion
+          method: get
+      - schedule:
+          rate: cron(0 0 ? * 2 *)
